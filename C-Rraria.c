@@ -22,19 +22,21 @@ typedef struct fVector {
 char tile[] = "#";
 
 char grass[] = "#";
-int grassColor = 1;
+int grassColor = 2;
 
 char dirt[] = "%";
-int dirtColor = 4;
+int dirtColor = 14;
 
 char stone[] = "&";
 int stoneColor = 8;
 
 char air[] = " ";
-int airColor = 8;
+int airColor = 3;
 
 char player1[] = "@";
 int player1Color = 11;
+
+static int SEED = 0;
 
 HANDLE stdOut;
 
@@ -58,6 +60,7 @@ int main()
 	playerPos.y = 11;
 
 	srand(time(NULL));
+	SEED = rand()%1000000;
 
 	system("color 0");
 	system("cls");
@@ -198,6 +201,10 @@ int main()
 				playerPos.x -= 1;
 				writeAt(playerPos.x, playerPos.y, player1);
 			}	
+		if (comando == 'q' || comando == 'Q')
+			{
+				exit(0);
+			}	
 	}
 
 	return 0;
@@ -231,9 +238,6 @@ void writeAt(int column, int line, char *character)
 	goToxy(column, line);
 	writeChar(character);
 }
-
-
-static int SEED = 0;
 
 static int hash[] = {208,34,231,213,32,248,233,56,161,78,24,140,71,48,140,254,245,255,247,247,40,
                      185,248,251,245,28,124,204,204,76,36,1,107,28,234,163,202,224,245,128,167,204,
