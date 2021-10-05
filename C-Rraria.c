@@ -4,8 +4,8 @@
 #include <windows.h>
 #include <time.h>
 
-#define WIDTH  100
-#define HEIGHT 50
+#define WIDTH  97
+#define HEIGHT 80
 
 #define LENGTH WIDTH*HEIGHT
 
