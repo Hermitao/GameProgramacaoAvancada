@@ -5,13 +5,13 @@
 #include <windows.h>
 #include <time.h>
 
-#define WIDTH  100
-#define HEIGHT 50
+#define WIDTH  96
+#define HEIGHT 36
 
 #define LENGTH WIDTH*HEIGHT
 
 #define PORT 5000
-#define MAX_FILA 10	
+#define MAX_FILA 10
 
 typedef struct iVector {
 	int x;
@@ -40,9 +40,6 @@ int airColor = 3;
 char player1[] = "@";
 int player1Color = 11;
 
-char player2[] = "@";
-int player2Color = 5;
-
 static int SEED = 0;
 
 HANDLE stdOut;
@@ -62,14 +59,9 @@ float perlin2d(float x, float y, float freq, int depth);
 
 int main()
 {
-	iVector playerPos1;
-	iVector playerPos2;
-	
-	playerPos1.x = 5;
-	playerPos1.y = 11;
-	
-	playerPos2.x = 8;
-	playerPos2.y = 11;
+	iVector playerPos;
+	playerPos.x = 5;
+	playerPos.y = 11;
 
 	srand(time(NULL));
 	SEED = rand()%1000000;
@@ -174,17 +166,12 @@ int main()
 	}
 
 	SetConsoleTextAttribute(stdOut, player1Color);
-	writeAt(playerPos1.x, playerPos1.y, player1);
-	
-	SetConsoleTextAttribute(stdOut, player2Color);
-	writeAt(playerPos2.x, playerPos2.y, player2);
+	writeAt(playerPos.x, playerPos.y, player1);
 	
 	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE); 
     DWORD mode = 0;
     GetConsoleMode(hStdin, &mode);
     SetConsoleMode(hStdin, mode & (~ENABLE_ECHO_INPUT));
-
-
 
 	int socketServidor;                 // Serve para "escutar as informação" - Descritor do Socket - Server
     int socketCliente;                  // Serve para "comunicar com novos cliente" - Descritor do Socket - Client
@@ -222,7 +209,8 @@ int main()
 
     //Iniciar o processo de estuda dos clientes
     estado = 0;
-    estado = listen(socketServidor, MAX_FILA);                              // Backlog : numero de conexões em espera
+    estado = listen(socketServidor,         // Descritor do Socket
+    MAX_FILA);                              // Backlog : numero de conexões em espera
 
     if ( estado == -1) {
         perror("Erro na listen : ");
@@ -251,10 +239,11 @@ int main()
             closesocket(socketCliente);
             exit(EXIT_FAILURE);
         }
-
+        //VINDOS
         closesocket(socketCliente);
+        //UNIX
+        //close(socketCliente);
     }
-
 	
 	while (1) 
 	{
@@ -263,68 +252,31 @@ int main()
 		
 		if (comando == 's' || comando == 'S')
 			{
-				SetConsoleTextAttribute(stdOut, player1Color);
-				writeAt(playerPos1.x, playerPos1.y, " ");
-				playerPos1.y += 1;
-				writeAt(playerPos1.x, playerPos1.y, player1);
+				writeAt(playerPos.x, playerPos.y, " ");
+				playerPos.y += 1;
+				writeAt(playerPos.x, playerPos.y, player1);
 			}
 			
 		if (comando == 'w' || comando == 'W')
 			{
-				SetConsoleTextAttribute(stdOut, player1Color);
-				writeAt(playerPos1.x, playerPos1.y, " ");
-				playerPos1.y -= 1;
-				writeAt(playerPos1.x, playerPos1.y, player1);
+				writeAt(playerPos.x, playerPos.y, " ");
+				playerPos.y -= 1;
+				writeAt(playerPos.x, playerPos.y, player1);
 			}
 	
 		if (comando == 'd' || comando == 'D')
 			{
-				SetConsoleTextAttribute(stdOut, player1Color);
-				writeAt(playerPos1.x, playerPos1.y, " ");
-				playerPos1.x += 1;
-				writeAt(playerPos1.x, playerPos1.y, player1);
+				writeAt(playerPos.x, playerPos.y, " ");
+				playerPos.x += 1;
+				writeAt(playerPos.x, playerPos.y, player1);
 			}
 		
 		if (comando == 'a' || comando == 'A')
 			{
-				SetConsoleTextAttribute(stdOut, player1Color);
-				writeAt(playerPos1.x, playerPos1.y, " ");
-				playerPos1.x -= 1;
-				writeAt(playerPos1.x, playerPos1.y, player1);
-			}
-			
-		if (comando == 'k' || comando == 'K')
-			{
-				SetConsoleTextAttribute(stdOut, player2Color);
-				writeAt(playerPos2.x, playerPos2.y, " ");
-				playerPos2.y += 1;
-				writeAt(playerPos2.x, playerPos2.y, player1);
-			}
-			
-		if (comando == 'i' || comando == 'I')
-			{
-				SetConsoleTextAttribute(stdOut, player2Color);
-				writeAt(playerPos2.x, playerPos2.y, " ");
-				playerPos2.y -= 1;
-				writeAt(playerPos2.x, playerPos2.y, player1);
-			}
-	
-		if (comando == 'l' || comando == 'L')
-			{
-				SetConsoleTextAttribute(stdOut, player2Color);
-				writeAt(playerPos2.x, playerPos2.y, " ");
-				playerPos2.x += 1;
-				writeAt(playerPos2.x, playerPos2.y, player1);
-			}
-		
-		if (comando == 'j' || comando == 'J')
-			{
-				SetConsoleTextAttribute(stdOut, player2Color);
-				writeAt(playerPos2.x, playerPos2.y, " ");
-				playerPos2.x -= 1;
-				writeAt(playerPos2.x, playerPos2.y, player1);
-			}
-			
+				writeAt(playerPos.x, playerPos.y, " ");
+				playerPos.x -= 1;
+				writeAt(playerPos.x, playerPos.y, player1);
+			}	
 		if (comando == 'q' || comando == 'Q')
 			{
 				exit(0);
