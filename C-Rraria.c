@@ -4,8 +4,8 @@
 #include <windows.h>
 #include <time.h>
 
-#define WIDTH  96
-#define HEIGHT 36
+#define WIDTH  100
+#define HEIGHT 50
 
 #define LENGTH WIDTH*HEIGHT
 
@@ -36,6 +36,9 @@ int airColor = 3;
 char player1[] = "@";
 int player1Color = 11;
 
+char player2[] = "@";
+int player2Color = 5;
+
 static int SEED = 0;
 
 HANDLE stdOut;
@@ -55,9 +58,14 @@ float perlin2d(float x, float y, float freq, int depth);
 
 int main()
 {
-	iVector playerPos;
-	playerPos.x = 5;
-	playerPos.y = 11;
+	iVector playerPos1;
+	iVector playerPos2;
+	
+	playerPos1.x = 5;
+	playerPos1.y = 11;
+	
+	playerPos2.x = 8;
+	playerPos2.y = 11;
 
 	srand(time(NULL));
 	SEED = rand()%1000000;
@@ -162,7 +170,10 @@ int main()
 	}
 
 	SetConsoleTextAttribute(stdOut, player1Color);
-	writeAt(playerPos.x, playerPos.y, player1);
+	writeAt(playerPos1.x, playerPos1.y, player1);
+	
+	SetConsoleTextAttribute(stdOut, player2Color);
+	writeAt(playerPos2.x, playerPos2.y, player2);
 	
 	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE); 
     DWORD mode = 0;
@@ -176,31 +187,68 @@ int main()
 		
 		if (comando == 's' || comando == 'S')
 			{
-				writeAt(playerPos.x, playerPos.y, " ");
-				playerPos.y += 1;
-				writeAt(playerPos.x, playerPos.y, player1);
+				SetConsoleTextAttribute(stdOut, player1Color);
+				writeAt(playerPos1.x, playerPos1.y, " ");
+				playerPos1.y += 1;
+				writeAt(playerPos1.x, playerPos1.y, player1);
 			}
 			
 		if (comando == 'w' || comando == 'W')
 			{
-				writeAt(playerPos.x, playerPos.y, " ");
-				playerPos.y -= 1;
-				writeAt(playerPos.x, playerPos.y, player1);
+				SetConsoleTextAttribute(stdOut, player1Color);
+				writeAt(playerPos1.x, playerPos1.y, " ");
+				playerPos1.y -= 1;
+				writeAt(playerPos1.x, playerPos1.y, player1);
 			}
 	
 		if (comando == 'd' || comando == 'D')
 			{
-				writeAt(playerPos.x, playerPos.y, " ");
-				playerPos.x += 1;
-				writeAt(playerPos.x, playerPos.y, player1);
+				SetConsoleTextAttribute(stdOut, player1Color);
+				writeAt(playerPos1.x, playerPos1.y, " ");
+				playerPos1.x += 1;
+				writeAt(playerPos1.x, playerPos1.y, player1);
 			}
 		
 		if (comando == 'a' || comando == 'A')
 			{
-				writeAt(playerPos.x, playerPos.y, " ");
-				playerPos.x -= 1;
-				writeAt(playerPos.x, playerPos.y, player1);
-			}	
+				SetConsoleTextAttribute(stdOut, player1Color);
+				writeAt(playerPos1.x, playerPos1.y, " ");
+				playerPos1.x -= 1;
+				writeAt(playerPos1.x, playerPos1.y, player1);
+			}
+			
+		if (comando == 'k' || comando == 'K')
+			{
+				SetConsoleTextAttribute(stdOut, player2Color);
+				writeAt(playerPos2.x, playerPos2.y, " ");
+				playerPos2.y += 1;
+				writeAt(playerPos2.x, playerPos2.y, player1);
+			}
+			
+		if (comando == 'i' || comando == 'I')
+			{
+				SetConsoleTextAttribute(stdOut, player2Color);
+				writeAt(playerPos2.x, playerPos2.y, " ");
+				playerPos2.y -= 1;
+				writeAt(playerPos2.x, playerPos2.y, player1);
+			}
+	
+		if (comando == 'l' || comando == 'L')
+			{
+				SetConsoleTextAttribute(stdOut, player2Color);
+				writeAt(playerPos2.x, playerPos2.y, " ");
+				playerPos2.x += 1;
+				writeAt(playerPos2.x, playerPos2.y, player1);
+			}
+		
+		if (comando == 'j' || comando == 'J')
+			{
+				SetConsoleTextAttribute(stdOut, player2Color);
+				writeAt(playerPos2.x, playerPos2.y, " ");
+				playerPos2.x -= 1;
+				writeAt(playerPos2.x, playerPos2.y, player1);
+			}
+			
 		if (comando == 'q' || comando == 'Q')
 			{
 				exit(0);
