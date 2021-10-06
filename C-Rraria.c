@@ -5,8 +5,13 @@
 #include <windows.h>
 #include <time.h>
 
+<<<<<<< Updated upstream
 #define WIDTH  97
 #define HEIGHT 80
+=======
+#define WIDTH  100
+#define HEIGHT 16
+>>>>>>> Stashed changes
 
 #define LENGTH WIDTH*HEIGHT
 
@@ -229,7 +234,6 @@ int main()
         exit(EXIT_FAILURE);
     }
     
-
     while(1){ 
         tamanho = sizeof(struct sockaddr); 
         // Aceitar o cliente
@@ -244,13 +248,28 @@ int main()
         
         printf("Cliente conectado => %s\n", inet_ntoa(enderecoCliente.sin_addr) );
         
-        estado = send(socketCliente, "Seja bem vindo!\n", 16, 0);
+        estado = send(socketCliente, "Bem-vindo!\n", LENGTH, 0);
+		char buffer[100];
 
         if ( estado == -1){ 
             perror("Erro ao enviar a mensagem : ");
             closesocket(socketCliente);
             exit(EXIT_FAILURE);
         }
+
+		int numBytes = 0; 
+		numBytes = recv(socketCliente, buffer, 64, 0x8);
+
+		if ( numBytes < 0)
+		{ 
+			printf("%d", &numBytes);
+			printf("\n");
+			perror("Erro ao receber informacoes\n");
+        	exit(EXIT_FAILURE);
+    	}
+
+		buffer[numBytes] = '\0';
+		printf("Mensagem Recebida = %s", buffer);
 
         closesocket(socketCliente);
     }

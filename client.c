@@ -12,7 +12,7 @@
 //#include <sys/types.h>
 
 #define PORT 5000
-#define MAX_DATA 100
+#define MAX_DATA 100000
 
 int main()
 {
@@ -64,6 +64,16 @@ int main()
 
     buffer[numBytes] = '\0';
     printf("Mensagem Recebida = %s", buffer);
+
+	int socketServidor;
+	int tamanho = 0;
+	tamanho = sizeof(struct sockaddr);
+	socketServidor = accept(socketCliente, (struct sockaddr *) &enderecoServidor, &tamanho);
+	char comando;
+    char comandoString[2]; 
+    scanf("%s", comandoString);
+	send(socketServidor, "comandoString", 64, 0);
+
     closesocket(socketCliente);
 
     return 0;
