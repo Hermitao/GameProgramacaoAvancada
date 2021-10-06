@@ -6,7 +6,7 @@
 #include <time.h>
 
 #define WIDTH  100
-#define HEIGHT 16
+#define HEIGHT 70
 
 #define LENGTH WIDTH*HEIGHT
 
