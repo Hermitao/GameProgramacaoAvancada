@@ -5,13 +5,8 @@
 #include <windows.h>
 #include <time.h>
 
-<<<<<<< Updated upstream
-#define WIDTH  97
-#define HEIGHT 80
-=======
 #define WIDTH  100
 #define HEIGHT 16
->>>>>>> Stashed changes
 
 #define LENGTH WIDTH*HEIGHT
 
@@ -246,10 +241,10 @@ int main()
             exit(EXIT_FAILURE);
         }
         
-        printf("Cliente conectado => %s\n", inet_ntoa(enderecoCliente.sin_addr) );
+        //printf("Cliente conectado => %s\n", inet_ntoa(enderecoCliente.sin_addr) );
         
         estado = send(socketCliente, "Bem-vindo!\n", LENGTH, 0);
-		char buffer[100];
+		char buffer[1000];
 
         if ( estado == -1){ 
             perror("Erro ao enviar a mensagem : ");
@@ -257,98 +252,98 @@ int main()
             exit(EXIT_FAILURE);
         }
 
-		int numBytes = 0; 
-		numBytes = recv(socketCliente, buffer, 64, 0x8);
+		while (1)
+		{
 
-		if ( numBytes < 0)
-		{ 
-			printf("%d", &numBytes);
-			printf("\n");
-			perror("Erro ao receber informacoes\n");
-        	exit(EXIT_FAILURE);
-    	}
-
-		buffer[numBytes] = '\0';
-		printf("Mensagem Recebida = %s", buffer);
-
-        closesocket(socketCliente);
-    }
-
-	
-	while (1) 
-	{
-		int comando;
-		comando = _getch();
+			int comando;
+			comando = _getch();
 		
-		if (comando == 's' || comando == 'S')
+			if (comando == 's' || comando == 'S')
 			{
 				SetConsoleTextAttribute(stdOut, player1Color);
 				writeAt(playerPos1.x, playerPos1.y, " ");
 				playerPos1.y += 1;
 				writeAt(playerPos1.x, playerPos1.y, player1);
 			}
-			
-		if (comando == 'w' || comando == 'W')
+				
+			if (comando == 'w' || comando == 'W')
 			{
 				SetConsoleTextAttribute(stdOut, player1Color);
 				writeAt(playerPos1.x, playerPos1.y, " ");
 				playerPos1.y -= 1;
 				writeAt(playerPos1.x, playerPos1.y, player1);
 			}
-	
-		if (comando == 'd' || comando == 'D')
+		
+			if (comando == 'd' || comando == 'D')
 			{
 				SetConsoleTextAttribute(stdOut, player1Color);
 				writeAt(playerPos1.x, playerPos1.y, " ");
 				playerPos1.x += 1;
 				writeAt(playerPos1.x, playerPos1.y, player1);
 			}
-		
-		if (comando == 'a' || comando == 'A')
+			
+			if (comando == 'a' || comando == 'A')
 			{
 				SetConsoleTextAttribute(stdOut, player1Color);
 				writeAt(playerPos1.x, playerPos1.y, " ");
 				playerPos1.x -= 1;
 				writeAt(playerPos1.x, playerPos1.y, player1);
 			}
+				
+			if (comando == 'q' || comando == 'Q')
+			{
+				exit(0);
+			}	
 			
-		if (comando == 'k' || comando == 'K')
+			int numBytes = 0; 
+			numBytes = recv(socketCliente, buffer, 64, 0);
+
+			if ( numBytes < 0)
+			{ 
+				printf("%d", &numBytes);
+				printf("\n");
+				perror("Erro ao receber informacoes\n");
+				exit(EXIT_FAILURE);
+			}
+
+			buffer[numBytes] = '\0';
+
+			if (buffer[0] == 's' || buffer[0] == 'S')
 			{
 				SetConsoleTextAttribute(stdOut, player2Color);
 				writeAt(playerPos2.x, playerPos2.y, " ");
 				playerPos2.y += 1;
-				writeAt(playerPos2.x, playerPos2.y, player1);
+				writeAt(playerPos2.x, playerPos2.y, player2);
 			}
 			
-		if (comando == 'i' || comando == 'I')
+			if (buffer[0] == 'w' || buffer[0] == 'W')
 			{
 				SetConsoleTextAttribute(stdOut, player2Color);
 				writeAt(playerPos2.x, playerPos2.y, " ");
 				playerPos2.y -= 1;
-				writeAt(playerPos2.x, playerPos2.y, player1);
+				writeAt(playerPos2.x, playerPos2.y, player2);
 			}
 	
-		if (comando == 'l' || comando == 'L')
+			if (buffer[0] == 'd' || buffer[0] == 'D')
 			{
 				SetConsoleTextAttribute(stdOut, player2Color);
 				writeAt(playerPos2.x, playerPos2.y, " ");
 				playerPos2.x += 1;
-				writeAt(playerPos2.x, playerPos2.y, player1);
+				writeAt(playerPos2.x, playerPos2.y, player2);
 			}
 		
-		if (comando == 'j' || comando == 'J')
+			if (buffer[0] == 'a' || buffer[0] == 'A')
 			{
 				SetConsoleTextAttribute(stdOut, player2Color);
 				writeAt(playerPos2.x, playerPos2.y, " ");
 				playerPos2.x -= 1;
-				writeAt(playerPos2.x, playerPos2.y, player1);
+				writeAt(playerPos2.x, playerPos2.y, player2);
 			}
 			
-		if (comando == 'q' || comando == 'Q')
-			{
-				exit(0);
-			}	
-	}
+		}
+
+        closesocket(socketCliente);
+    }
 
 	return 0;
 }
