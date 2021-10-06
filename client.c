@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <windows.h>
-#include <conio.h>
 
 // VINDOS
 #include <WinSock2.h>
@@ -67,23 +65,10 @@ int main()
     buffer[numBytes] = '\0';
     printf("Mensagem Recebida = %s", buffer);
 
-	//int socketServidor;
-	//int tamanho = 0;
-	//tamanho = sizeof(struct sockaddr);
-	//socketServidor = accept(socketCliente, (struct sockaddr *) &enderecoServidor, &tamanho);
-    while (1)
-    {
-        char comando = _getch();
-        if (comando == 'q')
-        {
-            exit(0);
-        }
-        char comandoString[2];
-        comandoString[0] = comando;
-        comandoString[1] = '\0';
-        send(socketCliente, comandoString, 64, 0);
-    }
-
+	char comandoString[2];
+	scanf("%s", comandoString); 
+	send(socketCliente, comandoString, 64, 0);
+	
     closesocket(socketCliente);
 
     return 0;
